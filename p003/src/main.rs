@@ -1,47 +1,24 @@
-fn primes(n: usize) -> Vec<usize> {
-    let mut flags = vec![true; n];
-    let sqrt = (n as f64).sqrt() as usize;
-    for i in 2..(sqrt + 1) {
-        if flags[i] {
-            let mut next = i.pow(2);
-            while next < n {
-                flags[next] = false;
-                next += i;
-            }
-        }
-    }
-
-    let mut primes = Vec::new();
-    for (i, is_prime) in flags.iter().enumerate() {
-        if *is_prime {
-            primes.push(i);
-        }
-    }
-
-    primes[2..].to_vec()
-}
-
-
-
 fn largest(n: usize) -> usize {
-    let p = primes(n + 1);
-
-    if &n == &p[p.len() - 1] {
+    if n == 4 {
+        return 2;
+    }
+    if n < 4 {
         return n;
     }
 
-    let mut largest = 2;
+    let mut m = 3;
+    let mut p = n;
+    let mut l = m;
 
-    for prime in p {
-        if prime > n / 2 {
-            break;
+    while ((m as f64).sqrt() as usize) < p {
+        if p % m == 0 {
+            p = p / m;
+            l = m;
         }
-        if n % prime == 0 {
-            largest = prime;
-        }
+        m += 2;
     }
 
-    largest
+    l
 }
 
 fn main() {
