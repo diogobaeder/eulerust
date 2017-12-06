@@ -1,16 +1,21 @@
 fn prime_sum(n: usize) -> usize {
-    let mut primes: Vec<usize> = Vec::with_capacity(n);
-    let mut cur_num: usize = 3;
-    let mut cur_sum: usize = 2;
+    let mut flags: Vec<bool> = vec![true; n - 1];
+    let sqrt = (n as f64).sqrt() as usize;
 
-    while cur_num < n {
-        if !primes.iter().any(|x| cur_num % x == 0) {
-            primes.push(cur_num);
-            cur_sum += cur_num;
+    for i in 2..(sqrt + 1) {
+        if *flags.get(i - 2).unwrap() {
+            let mut j = i.pow(2);
+            while j < n + 1 {
+                flags[(j - 2)] = false;
+                j += i;
+            }
         }
-        cur_num += 2;
     }
-    cur_sum
+    return flags
+        .iter()
+        .enumerate()
+        .map(|(i, f)| if *f { i + 2 } else { 0 })
+        .sum::<usize>();
 }
 
 fn main() {
