@@ -11,11 +11,11 @@ fn prime_sum(n: usize) -> usize {
             }
         }
     }
-    return flags
+    flags
         .iter()
         .enumerate()
         .map(|(i, f)| if *f { i + 2 } else { 0 })
-        .sum::<usize>();
+        .sum::<usize>()
 }
 
 fn main() {
