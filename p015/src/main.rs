@@ -1,23 +1,20 @@
-fn next_path(i: u8, j: u8, n: u8, q: usize) -> usize {
-    if i == n && j == n {
-        return q + 1;
+fn paths(n: usize) -> usize {
+    let mut matrix = vec![vec![0; n]; n];
+
+    matrix[0][0] = 2;
+
+    for i in 0..matrix.len() {
+        for j in 0..matrix.len() {
+            match (i, j) {
+                (0, 0) => matrix[i][j] = 2,
+                (0, j) => matrix[i][j] = matrix[i][j - 1] + 1,
+                (i, 0) => matrix[i][j] = matrix[i - 1][j] + 1,
+                (i, j) => matrix[i][j] = matrix[i - 1][j] + matrix[i][j - 1],
+            }
+        }
     }
 
-    let mut q = q;
-
-    if i < n {
-        q = next_path(i + 1, j, n, q);
-    }
-
-    if j < n {
-        q = next_path(i, j + 1, n, q);
-    }
-
-    q
-}
-
-fn paths(n: u8) -> usize {
-    return next_path(0, 0, n, 0);
+    matrix[n - 1][n - 1]
 }
 
 fn main() {
@@ -36,5 +33,10 @@ mod tests {
     #[test]
     fn paths_2() {
         assert_eq!(paths(2), 6);
+    }
+
+    #[test]
+    fn paths_3() {
+        assert_eq!(paths(3), 20);
     }
 }
